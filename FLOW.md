@@ -4,11 +4,13 @@
 Client {
     id
     name
+    orderList
 }
 
 Courier {
     id
     name
+    orderList
 }
 
 Restaurant {

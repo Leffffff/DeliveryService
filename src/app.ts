@@ -3,6 +3,8 @@ import { clientRouter } from './routes/clientRouter';
 import cors from 'cors';
 
 const app = express();
+const port = 8080;
+
 // init db with fixtures
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -14,9 +16,11 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (request, response) => {
-  response.json({ info: 'Hi from /' });
+  response.end();
 });
 
-app.use('/client', clientRouter);
+app.use('/clients', clientRouter);
 
-app.listen(8080, () => console.log('Listen http://localhost:8080'));
+export const server = app.listen(port, () =>
+  console.log(`Listen http://localhost:${port}`)
+);
