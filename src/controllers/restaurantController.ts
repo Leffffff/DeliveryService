@@ -19,7 +19,7 @@ export const getRestaurant = async (
 ): Promise<void> => {
   const { id } = req.params;
   const { restaurantRepository } = req.body;
-  if (!id) res.status(404).json('Restaurant not found');
+
   const restaurant = await restaurantRepository.getRestaurant(id);
 
   res.status(200).json(restaurant);
@@ -31,7 +31,6 @@ export const updateRestaurant = async (
 ): Promise<void> => {
   const { id } = req.params;
   const { restaurantRepository } = req.body;
-  if (!id) res.status(404).json('Restaurant not found');
 
   const params = req.body;
   const restaurant = await restaurantRepository.updateRestaurant(id, params);
@@ -45,7 +44,6 @@ export const deleteRestaurant = async (
 ): Promise<void> => {
   const { id } = req.params;
   const { restaurantRepository } = req.body;
-  if (!id) res.status(404).json('Restaurant not found');
 
   const restaurant = await restaurantRepository.deleteRestaurant(id);
 

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Client, Courier } from './models';
+import { OrderRepository } from './repositories/orderRepository';
 import { RestaurantRepository } from './repositories/restaurantRepository';
 import { UserRepository } from './repositories/userRepository';
 
@@ -34,3 +35,15 @@ export const defineRestaurant = (
   req.body.restaurantRepository = new RestaurantRepository();
   next();
 };
+
+export const defineOrder = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  req.body.orderRepository = new OrderRepository();
+  next();
+};
+
+export const getRandomDeliveryTime = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min) + min);

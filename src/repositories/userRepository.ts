@@ -1,4 +1,3 @@
-import { any } from 'sequelize/types/lib/operators';
 import { ClientAttributes, ClientStatic } from '../models/clientModel';
 import { CourierStatic } from '../models/courierModel';
 //better error handling
@@ -59,6 +58,22 @@ export class UserRepository {
                 throw e;
               })
       )
+      .catch((e) => {
+        throw e;
+      });
+  }
+
+  async getRandomCourier(): Promise<ClientAttributes | null> {
+    const seq = this.model.sequelize;
+    return await this.model
+      .findOne({
+        order: seq?.random(),
+      })
+      .then((courier) => {
+        return courier === null
+          ? null
+          : (courier?.toJSON() as ClientAttributes);
+      })
       .catch((e) => {
         throw e;
       });

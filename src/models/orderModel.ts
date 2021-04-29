@@ -2,10 +2,14 @@ import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 
 export interface OrderAttributes {
   id?: number;
+  clientId: string;
+  restaurantId: string;
+  courierId: string;
   products: Record<string, unknown>[];
   amount: number;
-  createdAt: Date;
-  deliveredAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deliveryTime: number;
 }
 
 export interface OrderModel extends Model<OrderAttributes>, OrderAttributes {}
@@ -23,8 +27,20 @@ export function OrderFactory(sequelize: Sequelize): OrderStatic {
       autoIncrement: true,
       primaryKey: true,
     },
+    clientId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    courierId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    restaurantId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     products: {
-      type: DataTypes.ARRAY(DataTypes.JSON),
+      type: DataTypes.ARRAY({ type: DataTypes.JSON }),
       allowNull: false,
     },
     amount: {
@@ -36,8 +52,13 @@ export function OrderFactory(sequelize: Sequelize): OrderStatic {
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    deliveredAt: {
+    updatedAt: {
       type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    deliveryTime: {
+      type: DataTypes.DOUBLE,
       allowNull: true,
       //   defaultValue: DataTypes.NOW,
     },

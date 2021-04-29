@@ -19,7 +19,6 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
   const { courierRepository, clientRepository } = req.body;
   const repository = courierRepository ?? clientRepository;
 
-  if (!id) res.status(404).json('User not found');
   const user = await repository.getUser(id);
 
   res.status(200).json(user);
@@ -32,8 +31,6 @@ export const updateUser = async (
   const { id } = req.params;
   const { courierRepository, clientRepository } = req.body;
   const repository = courierRepository ?? clientRepository;
-
-  if (!id) res.status(404).json('User not found');
 
   const params = req.body;
   const user = await repository.updateUser(id, params);
@@ -48,8 +45,6 @@ export const deleteUser = async (
   const { id } = req.params;
   const { courierRepository, clientRepository } = req.body;
   const repository = courierRepository ?? clientRepository;
-
-  if (!id) res.status(404).json('User not found');
 
   const user = await repository.deleteUser(id);
 

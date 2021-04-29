@@ -22,8 +22,8 @@ app.get('/', (request, response) => {
 });
 
 app.use('/clients', clientRouter);
-app.use('/courier', courierRouter);
-app.use('/restaurant', restaurantRouter);
+app.use('/couriers', courierRouter);
+app.use('/restaurants', restaurantRouter);
 
 export const server = app.listen(port, () =>
   console.log(`Listen http://localhost:${port}`)
