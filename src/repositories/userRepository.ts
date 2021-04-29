@@ -1,4 +1,4 @@
-import { Client } from '../types';
+import { User } from '../types';
 import { Pool } from 'pg';
 import { pgConfig } from '../config';
 //better error handling
@@ -12,7 +12,7 @@ export class UserRepository {
     this.dataBase = new Pool(pgConfig || undefined);
   }
 
-  async createUser(name: string): Promise<Client> {
+  async createUser(name: string): Promise<User> {
     const queryString = `INSERT INTO ${this.table} (name) VALUES ($1) RETURNING *`;
     return await this.dataBase
       .query(queryString, [name])
@@ -22,7 +22,7 @@ export class UserRepository {
       });
   }
 
-  async getUser(id: string): Promise<Client | Error> {
+  async getUser(id: string): Promise<User | Error> {
     const queryString = `SELECT * FROM ${this.table} WHERE id = $1`;
     return await this.dataBase
       .query(queryString, [id])
@@ -32,7 +32,7 @@ export class UserRepository {
       });
   }
 
-  async updateUser(id: string, { name }: any): Promise<Client[] | Error> {
+  async updateUser(id: string, { name }: any): Promise<User | Error> {
     const queryString = `UPDATE ${this.table} SET name = $1 WHERE id = $2 RETURNING *`;
     return await this.dataBase
       .query(queryString, [name, id])
@@ -42,7 +42,7 @@ export class UserRepository {
       });
   }
 
-  async deleteUser(id: string): Promise<Client> {
+  async deleteUser(id: string): Promise<User> {
     const queryString = `DELETE FROM ${this.table} WHERE id = $1 RETURNING *`;
     return await this.dataBase
       .query(queryString, [id])
