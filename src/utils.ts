@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Client, Courier } from './models';
+import { RestaurantRepository } from './repositories/restaurantRepository';
 import { UserRepository } from './repositories/userRepository';
 
 const repository = {
@@ -12,7 +13,7 @@ export const defineClient = (
   res: Response,
   next: NextFunction
 ): void => {
-  req.body.repository = repository['clientRepository'];
+  req.body.clientRepository = repository['clientRepository'];
   next();
 };
 
@@ -21,6 +22,15 @@ export const defineCourier = (
   res: Response,
   next: NextFunction
 ): void => {
-  req.body.repository = repository['courierRepository'];
+  req.body.courierRepository = repository['courierRepository'];
+  next();
+};
+
+export const defineRestaurant = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  req.body.restaurantRepository = new RestaurantRepository();
   next();
 };

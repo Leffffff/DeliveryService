@@ -5,9 +5,11 @@ import {
   getUser,
   updateUser,
 } from '../controllers/userController';
+import { defineCourier } from '../utils';
 
 export const courierRouter = Router();
 
+courierRouter.use(defineCourier);
 courierRouter.post('/', createUser);
 courierRouter.get('/:id', getUser);
 courierRouter.put('/:id', updateUser);

@@ -1,3 +1,4 @@
+import { any } from 'sequelize/types/lib/operators';
 import { ClientAttributes, ClientStatic } from '../models/clientModel';
 import { CourierStatic } from '../models/courierModel';
 //better error handling
@@ -9,19 +10,21 @@ export class UserRepository {
     this.model = model;
   }
 
-  async createUser(name: string): Promise<ClientAttributes | Error> {
+  async createUser(name: string): Promise<ClientAttributes> {
     return await this.model
       .create({ name })
-      .then(({ dataValues }: any) => dataValues)
+      .then((result) => result.toJSON() as ClientAttributes)
       .catch((e) => {
         throw e;
       });
   }
 
-  async getUser(id: string): Promise<ClientAttributes | Error> {
+  async getUser(id: string): Promise<ClientAttributes | null> {
     return await this.model
       .findByPk(id)
-      .then(({ dataValues }: any) => dataValues)
+      .then((result) =>
+        result === null ? null : (result.toJSON() as ClientAttributes)
+      )
       .catch((e) => {
         throw e;
       });
@@ -30,25 +33,31 @@ export class UserRepository {
   async updateUser(
     id: string,
     params: Partial<ClientAttributes>
-  ): Promise<ClientAttributes | Error> {
+  ): Promise<ClientAttributes | null> {
     return await this.model
       .update(params, { where: { id }, returning: true })
-      .then(([_, [{ dataValues }]]: any) => dataValues)
+      .then((result) =>
+        result[1][0] !== undefined
+          ? (result[1][0].toJSON() as ClientAttributes)
+          : null
+      )
       .catch((e) => {
         throw e;
       });
   }
 
-  async deleteUser(id: string): Promise<ClientAttributes | Error> {
+  async deleteUser(id: string): Promise<ClientAttributes | null> {
     return await this.model
       .findByPk(id)
-      .then(({ dataValues }: any) =>
-        this.model
-          .destroy({ where: { id } })
-          .then(() => dataValues)
-          .catch((e) => {
-            throw e;
-          })
+      .then((result) =>
+        result === null
+          ? null
+          : this.model
+              .destroy({ where: { id } })
+              .then(() => result.toJSON() as ClientAttributes)
+              .catch((e) => {
+                throw e;
+              })
       )
       .catch((e) => {
         throw e;

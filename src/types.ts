@@ -22,3 +22,10 @@ export type Order = {
   deliveredAt: Date;
   amount: number;
 };
+
+export type Menu = Product[];
+
+type Product = {
+  name: string;
+  cost: number;
+};

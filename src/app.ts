@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import { clientRouter } from './routes/clientRouter';
 import { courierRouter } from './routes/courierRouter';
-import { defineClient, defineCourier } from './utils';
+import { restaurantRouter } from './routes/restaurantRouter';
 
 const app = express();
 const port = 8080;
@@ -21,8 +21,9 @@ app.get('/', (request, response) => {
   response.end();
 });
 
-app.use('/clients', defineClient, clientRouter);
-app.use('/courier', defineCourier, courierRouter);
+app.use('/clients', clientRouter);
+app.use('/courier', courierRouter);
+app.use('/restaurant', restaurantRouter);
 
 export const server = app.listen(port, () =>
   console.log(`Listen http://localhost:${port}`)

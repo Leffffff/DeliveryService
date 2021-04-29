@@ -5,21 +5,24 @@ export const createUser = async (
   res: Response
 ): Promise<void> => {
   if (!req.body) res.json('No body');
-  const { name, repository } = req.body;
+  const { name, courierRepository, clientRepository } = req.body;
+  const repository = courierRepository ?? clientRepository;
 
   if (!name) res.json('No name provided');
-  const client = await repository.createUser(name);
+  const user = await repository.createUser(name);
 
-  res.status(200).json(client);
+  res.status(200).json(user);
 };
 
 export const getUser = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  const { repository } = req.body;
-  if (!id) res.status(404).json('User not found');
-  const client = await repository.getUser(id);
+  const { courierRepository, clientRepository } = req.body;
+  const repository = courierRepository ?? clientRepository;
 
-  res.status(200).json(client);
+  if (!id) res.status(404).json('User not found');
+  const user = await repository.getUser(id);
+
+  res.status(200).json(user);
 };
 
 export const updateUser = async (
@@ -27,13 +30,15 @@ export const updateUser = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  const { repository } = req.body;
+  const { courierRepository, clientRepository } = req.body;
+  const repository = courierRepository ?? clientRepository;
+
   if (!id) res.status(404).json('User not found');
 
   const params = req.body;
-  const client = await repository.updateUser(id, params);
+  const user = await repository.updateUser(id, params);
 
-  res.status(200).json(client);
+  res.status(200).json(user);
 };
 
 export const deleteUser = async (
@@ -41,10 +46,12 @@ export const deleteUser = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  const { repository } = req.body;
+  const { courierRepository, clientRepository } = req.body;
+  const repository = courierRepository ?? clientRepository;
+
   if (!id) res.status(404).json('User not found');
 
-  const client = await repository.deleteUser(id);
+  const user = await repository.deleteUser(id);
 
-  res.status(200).json(client);
+  res.status(200).json(user);
 };

@@ -1,7 +1,5 @@
 # Architecture
 
-## Combine courier and client into user and add them a role field ???
-
 ``` typescript
 Client {
     id

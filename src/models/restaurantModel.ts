@@ -1,9 +1,10 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
+import { Menu } from '../types';
 
 export interface RestaurantAttributes {
-  id: number;
+  id?: number;
   name: string;
-  menu: Record<string, unknown>;
+  menu: Menu;
 }
 
 export interface RestaurantModel
