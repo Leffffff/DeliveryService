@@ -1,17 +1,17 @@
-import { User } from '../types';
-import { Client } from '../models';
-import { ClientAttributes } from '../models/clientModel';
+import { ClientAttributes, ClientStatic } from '../models/clientModel';
+import { CourierStatic } from '../models/courierModel';
 //better error handling
 
 export class UserRepository {
-  table: string;
+  model: ClientStatic | CourierStatic;
 
-  constructor(table: string) {
-    this.table = table;
+  constructor(model: ClientStatic | CourierStatic) {
+    this.model = model;
   }
 
   async createUser(name: string): Promise<ClientAttributes | Error> {
-    return await Client.create({ name })
+    return await this.model
+      .create({ name })
       .then(({ dataValues }: any) => dataValues)
       .catch((e) => {
         throw e;
@@ -19,7 +19,8 @@ export class UserRepository {
   }
 
   async getUser(id: string): Promise<ClientAttributes | Error> {
-    return await Client.findByPk(id)
+    return await this.model
+      .findByPk(id)
       .then(({ dataValues }: any) => dataValues)
       .catch((e) => {
         throw e;
@@ -30,7 +31,8 @@ export class UserRepository {
     id: string,
     params: Partial<ClientAttributes>
   ): Promise<ClientAttributes | Error> {
-    return await Client.update(params, { where: { id }, returning: true })
+    return await this.model
+      .update(params, { where: { id }, returning: true })
       .then(([_, [{ dataValues }]]: any) => dataValues)
       .catch((e) => {
         throw e;
@@ -38,9 +40,11 @@ export class UserRepository {
   }
 
   async deleteUser(id: string): Promise<ClientAttributes | Error> {
-    return await Client.findByPk(id)
+    return await this.model
+      .findByPk(id)
       .then(({ dataValues }: any) =>
-        Client.destroy({ where: { id } })
+        this.model
+          .destroy({ where: { id } })
           .then(() => dataValues)
           .catch((e) => {
             throw e;

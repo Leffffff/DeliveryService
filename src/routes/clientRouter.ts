@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import {
-  createClient,
-  deleteClient,
-  getClient,
-  updateClient,
-} from '../controllers/clientController';
+  createUser,
+  deleteUser,
+  getUser,
+  updateUser,
+} from '../controllers/userController';
 
 export const clientRouter = Router();
 
-clientRouter.post('/', createClient);
-clientRouter.get('/:id', getClient);
-clientRouter.put('/:id', updateClient);
-clientRouter.delete('/:id', deleteClient);
+clientRouter.post('/', createUser);
+clientRouter.get('/:id', getUser);
+clientRouter.put('/:id', updateUser);
+clientRouter.delete('/:id', deleteUser);

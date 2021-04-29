@@ -1,6 +1,8 @@
+import cors from 'cors';
 import express from 'express';
 import { clientRouter } from './routes/clientRouter';
-import cors from 'cors';
+import { courierRouter } from './routes/courierRouter';
+import { defineClient, defineCourier } from './utils';
 
 const app = express();
 const port = 8080;
@@ -19,7 +21,8 @@ app.get('/', (request, response) => {
   response.end();
 });
 
-app.use('/clients', clientRouter);
+app.use('/clients', defineClient, clientRouter);
+app.use('/courier', defineCourier, courierRouter);
 
 export const server = app.listen(port, () =>
   console.log(`Listen http://localhost:${port}`)

@@ -10,8 +10,8 @@ export const dbConfig = new sequelize.Sequelize(
   pgConfig.user,
   pgConfig.password,
   {
-    port: pgConfig.port || 54320,
-    host: pgConfig.host || 'localhost',
+    port: pgConfig.port,
+    host: pgConfig.host,
     dialect: 'postgres',
     pool: {
       min: 0,
