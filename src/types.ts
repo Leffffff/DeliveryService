@@ -1,7 +1,9 @@
 export interface User {
   id: number;
   name: string;
-  orders: Order[];
+  createdAt: Date;
+  updatedAt: Date;
+  orders?: Order[];
 }
 
 type ConfigStringKeys = 'host' | 'user' | 'database' | 'password';

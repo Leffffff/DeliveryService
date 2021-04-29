@@ -1,54 +1,53 @@
 import { User } from '../types';
-import { Pool } from 'pg';
-import { pgConfig } from '../config';
+import { Client } from '../models';
+import { ClientAttributes } from '../models/clientModel';
 //better error handling
 
 export class UserRepository {
   table: string;
-  dataBase: Pool;
 
   constructor(table: string) {
     this.table = table;
-    this.dataBase = new Pool(pgConfig || undefined);
   }
 
-  async createUser(name: string): Promise<User> {
-    const queryString = `INSERT INTO ${this.table} (name) VALUES ($1) RETURNING *`;
-    return await this.dataBase
-      .query(queryString, [name])
-      .then((result) => result.rows[0])
-      .catch((err) => {
-        throw err;
+  async createUser(name: string): Promise<ClientAttributes | Error> {
+    return await Client.create({ name })
+      .then(({ dataValues }: any) => dataValues)
+      .catch((e) => {
+        throw e;
       });
   }
 
-  async getUser(id: string): Promise<User | Error> {
-    const queryString = `SELECT * FROM ${this.table} WHERE id = $1`;
-    return await this.dataBase
-      .query(queryString, [id])
-      .then((v) => v.rows[0])
-      .catch((err) => {
-        throw err;
+  async getUser(id: string): Promise<ClientAttributes | Error> {
+    return await Client.findByPk(id)
+      .then(({ dataValues }: any) => dataValues)
+      .catch((e) => {
+        throw e;
       });
   }
 
-  async updateUser(id: string, { name }: any): Promise<User | Error> {
-    const queryString = `UPDATE ${this.table} SET name = $1 WHERE id = $2 RETURNING *`;
-    return await this.dataBase
-      .query(queryString, [name, id])
-      .then((v) => v.rows[0])
-      .catch((err) => {
-        throw err;
+  async updateUser(
+    id: string,
+    params: Partial<ClientAttributes>
+  ): Promise<ClientAttributes | Error> {
+    return await Client.update(params, { where: { id }, returning: true })
+      .then(([_, [{ dataValues }]]: any) => dataValues)
+      .catch((e) => {
+        throw e;
       });
   }
 
-  async deleteUser(id: string): Promise<User> {
-    const queryString = `DELETE FROM ${this.table} WHERE id = $1 RETURNING *`;
-    return await this.dataBase
-      .query(queryString, [id])
-      .then((result) => result.rows[0])
-      .catch((err) => {
-        throw err;
+  async deleteUser(id: string): Promise<ClientAttributes | Error> {
+    return await Client.findByPk(id)
+      .then(({ dataValues }: any) =>
+        Client.destroy({ where: { id } })
+          .then(() => dataValues)
+          .catch((e) => {
+            throw e;
+          })
+      )
+      .catch((e) => {
+        throw e;
       });
   }
 }
