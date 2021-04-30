@@ -21,7 +21,7 @@ courierRouter.get('/:id', getUser);
 courierRouter.put('/:id', updateUser);
 courierRouter.delete('/:id', deleteUser);
 
-courierRouter.get('/:id/orders/place', defineOrder, frequentAddress); // add adress?
+courierRouter.get('/:id/orders/place', defineOrder, frequentAddress);
 courierRouter.get('/:id/orders/qty', defineOrder, getOrderQty);
 courierRouter.get('/:id/orders/time', defineOrder, avarageDeliveryTime);
 courierRouter.get('/:id/orders/amount', defineOrder, totalAmount);
