@@ -49,7 +49,13 @@ export const avarageDeliveryTime = async (
       0
     ) / orderQty;
 
-  res.status(200).send(`Avarage delivery time ${avaradeDeliveryTime} minutes`);
+  res
+    .status(200)
+    .send(
+      !isNaN(avaradeDeliveryTime)
+        ? `Avarage delivery time ${Math.floor(avaradeDeliveryTime)} minutes`
+        : `You have not delivered`
+    );
 };
 
 export const totalAmount = async (

@@ -41,7 +41,7 @@ export function OrderFactory(sequelize: Sequelize): OrderStatic {
       allowNull: false,
     },
     products: {
-      type: DataTypes.ARRAY({ type: DataTypes.JSON }),
+      type: DataTypes.JSON,
       allowNull: false,
     },
     amount: {

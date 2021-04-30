@@ -4,10 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('orders', {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      products: {
-        type: Sequelize.ARRAY({ type: Sequelize.JSON }),
-        notnull: true,
-      },
+      products: { type: Sequelize.JSON, notnull: true },
       amount: { type: Sequelize.DOUBLE, notnull: true },
       createdAt: { type: Sequelize.DATE, notnull: true },
       updatedAt: { type: Sequelize.DATE, notnull: true },
