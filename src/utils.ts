@@ -4,10 +4,20 @@ import { OrderRepository } from './repositories/orderRepository';
 import { RestaurantRepository } from './repositories/restaurantRepository';
 import { UserRepository } from './repositories/userRepository';
 
-const repository = {
-  clientRepository: new UserRepository(Client),
-  courierRepository: new UserRepository(Courier),
+const initRepositories = () => {
+  const clientRepository = new UserRepository(Client);
+  const courierRepository = new UserRepository(Courier);
+  const restaurantRepository = new RestaurantRepository();
+  const orderRepository = new OrderRepository();
+  return {
+    clientRepository,
+    courierRepository,
+    restaurantRepository,
+    orderRepository,
+  };
 };
+
+const repository = initRepositories();
 
 export const defineClient = (
   req: Request,
@@ -32,7 +42,7 @@ export const defineRestaurant = (
   res: Response,
   next: NextFunction
 ): void => {
-  req.body.restaurantRepository = new RestaurantRepository();
+  req.body.restaurantRepository = repository['restaurantRepository'];
   next();
 };
 
@@ -41,9 +51,25 @@ export const defineOrder = (
   res: Response,
   next: NextFunction
 ): void => {
-  req.body.orderRepository = new OrderRepository();
+  req.body.orderRepository = repository['orderRepository'];
   next();
 };
 
 export const getRandomDeliveryTime = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min) + min);
+
+export const findMostFrequent = (addresses: string[]): string | null => {
+  let freqAddress = null;
+
+  let frequency = 0;
+  addresses.reduce((acc: Record<string, number>, address) => {
+    address in acc ? acc[address]++ : (acc[address] = 1);
+
+    if (acc[address] > frequency) {
+      frequency = acc[address];
+      freqAddress = address;
+    }
+    return acc;
+  }, {});
+  return freqAddress;
+};

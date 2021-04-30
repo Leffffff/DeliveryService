@@ -10,6 +10,7 @@ export interface OrderAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   deliveryTime: number;
+  address: string;
 }
 
 export interface OrderModel extends Model<OrderAttributes>, OrderAttributes {}
@@ -59,8 +60,11 @@ export function OrderFactory(sequelize: Sequelize): OrderStatic {
     },
     deliveryTime: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
-      //   defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   });
 }

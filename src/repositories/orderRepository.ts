@@ -16,7 +16,8 @@ export class OrderRepository {
     courierId: string,
     products: Menu,
     amount: number,
-    deliveryTime: number
+    deliveryTime: number,
+    address: string
   ): Promise<OrderAttributes> {
     return await this.model
       .create({
@@ -26,6 +27,7 @@ export class OrderRepository {
         products,
         amount,
         deliveryTime,
+        address,
       })
       .then((result) => result.toJSON() as OrderAttributes)
       .catch((e) => {
@@ -33,7 +35,7 @@ export class OrderRepository {
       });
   }
 
-  async getOrder(options: WhereOptions): Promise<OrderAttributes[]> {
+  async getOrders(options: WhereOptions): Promise<OrderAttributes[]> {
     return await this.model
       .findAll({
         where: options,

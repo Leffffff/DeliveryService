@@ -5,7 +5,13 @@ import { getRandomDeliveryTime } from '../utils';
 export const makeOrder = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   if (!req.body) res.json('No body');
-  const { restaurantId, cart, courierRepository, orderRepository } = req.body;
+  const {
+    restaurantId,
+    cart,
+    address,
+    courierRepository,
+    orderRepository,
+  } = req.body;
 
   const amount = cart.reduce(
     (acc: number, next: Product) => (acc += next.cost),
@@ -21,7 +27,8 @@ export const makeOrder = async (req: Request, res: Response): Promise<void> => {
     courier.id,
     cart,
     amount,
-    deliveryTime
+    deliveryTime,
+    address
   );
 
   res.status(200).json(order);
